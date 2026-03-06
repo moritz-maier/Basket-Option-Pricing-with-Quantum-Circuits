@@ -1,0 +1,21 @@
+% -------------------------------------------------------------------------------------------------
+%      MDSG Latex Framework
+%      ============================================================================================
+%      File:                  abstract.tex
+%      Author(s):             Michael Duerr
+%      Version:               1
+%      Creation Date:         30. Mai 2010
+%      Creation Date:         30. Mai 2010
+%
+%      Notes:                 - Place your abstract here
+% -------------------------------------------------------------------------------------------------
+%
+\vspace*{2cm}
+
+\begin{center}
+    \textbf{Abstract}
+\end{center}
+
+\vspace*{1cm}
+
+\noindent Die Bewertung von Basket-Optionen stellt aufgrund der Abhängigkeit von mehreren Underlyings und deren Korrelationen eine komplexe numerische Herausforderung dar. Während klassische Monte-Carlo-Verfahren mit zunehmender Dimension hohen Rechenaufwand erfordern, ermöglichen Machine-Learning-Ansätze eine direkte Approximation der Preisfunktion. Ziel dieser Arbeit ist die Untersuchung variationaler Quantenschaltkreise (VQCs) zur Approximation von Basket-Optionspreisen sowie der Vergleich mit etablierten klassischen neuronalen Netzarchitekturen. Die Trainingsdaten basieren auf Monte-Carlo-Simulationen, deren Parameter aus historischen Marktdaten geschätzt werden. Es werden unterschiedliche Payoff-Strukturen (Worst-of, Best-of, Average) betrachtet sowie die Einflüsse von Trainingsdatensatzgröße, künstlichem Rauschen und einem zeitlich geordneten Train-Test-Split analysiert. Zusätzlich wird die Frequenzstruktur der Zielgrößen mithilfe einer Non-Uniform Fast Fourier Transform untersucht, um die darstellbare Modellkapazität der VQCs spektral einzuordnen. Die Ergebnisse zeigen, dass sowohl klassische neuronale Netze als auch VQC-basierte Modelle die Preisfunktion mit hoher Genauigkeit approximieren können. Während klassische Netze tendenziell von zunehmender Modellgröße profitieren, erreichen VQCs bereits bei moderater Schaltkreistiefe einen Großteil ihrer maximalen Leistungsfähigkeit, was mit der überwiegend niederfrequenten Struktur der Zielgrößen konsistent ist. Unter begrenzter Datenverfügbarkeit und starkem Rauschen erweisen sich einfachere Modelle als robuster, während komplexere Architekturen erst bei ausreichender Datenmenge ihr Potenzial entfalten. Insgesamt erreichen VQC-basierte Modelle eine konkurrenzfähige Approximationsleistung, ohne jedoch einen klaren Vorteil gegenüber klassischen neuronalen Netzen zu zeigen.

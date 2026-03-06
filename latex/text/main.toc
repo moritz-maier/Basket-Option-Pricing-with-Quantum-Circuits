@@ -1,0 +1,73 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Background}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Options and Derivatives}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Basket Options}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Monte Carlo Simulation for Basket Options}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Machine Learning}{5}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Classical Neural Networks}{5}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Variational Quantum Circuits}{6}{subsection.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.2.1}Circuit Architecture}{7}{subsubsection.2.4.2.1}%
+\contentsline {subsubsection}{\numberline {2.4.2.2}Coefficient Structure of the Circuit Output}{7}{subsubsection.2.4.2.2}%
+\contentsline {subsubsection}{\numberline {2.4.2.3}Fourier Representation of VQC}{8}{subsubsection.2.4.2.3}%
+\contentsline {subsubsection}{\numberline {2.4.2.4}Frequency Scaling via Encoding Prefactors}{9}{subsubsection.2.4.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.2.5}Parameterized Ansatz}{9}{subsubsection.2.4.2.5}%
+\contentsline {subsection}{\numberline {2.4.3}Training}{10}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Non-Uniform Fast Fourier Transform}{10}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Related Work}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Quantum Amplitude Estimation for Option Pricing}{13}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Quantum Differential Machine Learning for Option Pricing}{14}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Methodology}{17}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Study Objective and Experimental Strategy}{17}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Data Generation}{17}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Market Data and Parameter Estimation}{17}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Monte Carlo Basket Pricing}{18}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Model Specification}{19}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Culkin Architecture}{19}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Ferguson Architecture}{19}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Variational Quantum Circuit}{20}{subsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.3.1}Number of Qubits}{20}{subsubsection.4.3.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.3.2}Data Encoding}{20}{subsubsection.4.3.3.2}%
+\contentsline {paragraph}{\nonumberline Unary Encoding.}{20}{paragraph*.3}%
+\contentsline {paragraph}{\nonumberline Ternary Encoding.}{20}{paragraph*.5}%
+\contentsline {subsubsection}{\numberline {4.3.3.3}Trainable Blocks}{20}{subsubsection.4.3.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.3.4}Overall Architecture}{21}{subsubsection.4.3.3.4}%
+\contentsline {subsubsection}{\numberline {4.3.3.5}Model Output}{21}{subsubsection.4.3.3.5}%
+\contentsline {subsubsection}{\numberline {4.3.3.6}Number of Parameters}{21}{subsubsection.4.3.3.6}%
+\contentsline {subsubsection}{\numberline {4.3.3.7}Dynamical Lie Algebra and Effective Degrees of Freedom}{22}{subsubsection.4.3.3.7}%
+\contentsline {section}{\numberline {4.4}Frequency Analysis of the Target Functions}{22}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Training Procedure}{23}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Evaluation Metrics}{23}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Experimental Setup}{23}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Dataset}{23}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.2}Data Split}{24}{subsection.4.7.2}%
+\contentsline {subsection}{\numberline {4.7.3}Computation of the Frequency Structure of the Target Functions}{24}{subsection.4.7.3}%
+\contentsline {subsection}{\numberline {4.7.4}Model Configurations}{25}{subsection.4.7.4}%
+\contentsline {subsubsection}{\numberline {4.7.4.1}Variational Quantum Circuits}{25}{subsubsection.4.7.4.1}%
+\contentsline {subsubsection}{\numberline {4.7.4.2}Classical Neural Networks}{26}{subsubsection.4.7.4.2}%
+\contentsline {subsubsection}{\numberline {4.7.4.3}Comparison of Model Complexity}{26}{subsubsection.4.7.4.3}%
+\contentsline {subsection}{\numberline {4.7.5}Baseline Scenario}{27}{subsection.4.7.5}%
+\contentsline {subsection}{\numberline {4.7.6}Reduced Training Data}{27}{subsection.4.7.6}%
+\contentsline {subsection}{\numberline {4.7.7}Noise Robustness}{27}{subsection.4.7.7}%
+\contentsline {subsection}{\numberline {4.7.8}Reproducibility and Random Initialization}{27}{subsection.4.7.8}%
+\contentsline {section}{\numberline {4.8}Implementation Details}{28}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Results}{29}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Baseline Performance}{29}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Impact of Training Dataset Size}{31}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Impact of Noise}{33}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Combined Impact of Noise and Sample Size}{34}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Temporally Ordered Train-Test Split}{35}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{39}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Model Capacity and Frequency Structure}{39}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Impact of Model Capacity under Limited Data}{39}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Robustness to Noise}{40}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Interaction of Data Scarcity and Noise}{40}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Generalization under a Temporally Ordered Split}{41}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Limitations}{41}{section.6.6}%
+\contentsline {section}{\numberline {6.7}Future Work}{41}{section.6.7}%
+\contentsline {chapter}{\numberline {7}Conclusion}{43}{chapter.7}%
+\contentsline {chapter}{Transparency and Reproducibility}{45}{chapter*.21}%
+\contentsline {chapter}{\nonumberline List of Figures}{47}{chapter*.24}%
+\contentsline {chapter}{\nonumberline List of Tables}{49}{chapter*.25}%
+\contentsline {chapter}{\nonumberline Bibliography}{51}{chapter*.26}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

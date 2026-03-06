@@ -1,0 +1,23 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Train block $W^{(l)}_b(\theta _{l,b})$ for $d=4$ qubits. After an initial rotation on the first qubit, a linear CNOT ladder is implemented between neighboring qubits. After each CNOT gate, a general rotation operation is applied to the corresponding target qubit. The parameter $\theta _{b,j}$ denotes the full set of associated rotation parameters.}}{21}{figure.caption.6}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Overall architecture of the VQC (example $d=4$, $L=3$): Initial Ansatz layer $W^{(0)}(\theta _0)$, followed by alternating data-encoding layers $R_X(3^{l-1}x_n)$ and Ansatz layers $W^{(l)}(\theta _l)$. The measurement is performed on the last qubit.}}{22}{figure.caption.7}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Two-dimensional projection of the normalized amplitude spectrum of the training data over the two volatility dimensions. The projection is obtained by summing over the strike dimension.}}{24}{figure.caption.8}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Distribution of test-$R^2$ values across 30 seeds for Best-of basket options in the baseline scenario (full training dataset, no artificial noise). }}{29}{figure.caption.11}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Distribution of test-$R^2$ values across 30 seeds for Worst-of, Best-of, and Average basket options in the baseline scenario (full training dataset, no artificial noise). }}{30}{figure.caption.12}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Predictions versus target values for a representative seed in the baseline scenario (Worst-of, $N=25000$, $\alpha =0$). Left: Ferguson ($u=9$), right: VQC ($L=4$). The red diagonal indicates perfect prediction. }}{31}{figure.caption.13}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Error analysis on the test data for the same seed in the baseline scenario. Left: error as a function of relative strike $m$. Right: color-coded error across the two volatility dimensions. }}{32}{figure.caption.14}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Median test-$R^2$ as a function of the number of training observations for the Worst-of payoff. }}{32}{figure.caption.15}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Distribution of test-$R^2$ values across 30 random initializations for different noise intensities $\alpha $ for the Worst-of payoff ($N=25000$ training observations). }}{33}{figure.caption.16}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Median test-$R^2$ as a function of training dataset size for the Worst-of payoff under strong noise ($\alpha = 0.5$). }}{34}{figure.caption.17}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Distribution of test-$R^2$ values across 30 seeds for Worst-of, Best-of, and Average basket options in the baseline scenario with a temporally ordered train–test split ($N=25000$, $\alpha =0$). }}{35}{figure.caption.18}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Error analysis under the temporally ordered split (Best-of). Left: error as a function of the relative strike. Right: projection onto the volatility dimensions. }}{36}{figure.caption.19}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Rolling volatilities with marked test days exhibiting large errors. The dashed line indicates the boundary between the training and test periods. }}{37}{figure.caption.20}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

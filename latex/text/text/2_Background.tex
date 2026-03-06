@@ -1,0 +1,513 @@
+\chapter{Background}
+\label{sec:background}
+
+\section{Options and Derivatives}
+\label{sec:bg-options}
+
+Financial derivatives are contracts whose value depends on the performance of one or more underlying assets. These can include, for example, stocks, bonds, indices, or commodities. Derivatives are used both for hedging risks and for speculating on price movements.
+
+Options are a central class of derivatives that give the holder the right, but not the obligation, to buy (call) or sell (put) an underlying asset at a predetermined price (strike) at a fixed expiration date (European-style).
+
+The payoff of a simple call option on an underlying asset $S_T$ with strike $K$ can be expressed mathematically as
+\begin{equation}
+\text{Payoff}_{\text{Call}} = \max(S_T - K, 0),
+\end{equation}
+where $S_T$ denotes the price of the underlying asset at maturity $T$. 
+Since $S_T$ is a future and therefore uncertain quantity, its distribution must be modeled in order to determine the present value of the option.
+
+\section{Basket Options}
+\label{sec:bg-basket-options}
+
+Basket options are financial derivatives whose payouts depend on the performance of multiple underlying assets. They are frequently used in portfolio management or risk management to diversify the risk of individual assets. Unlike simple options on a single underlying, a basket option considers multiple stocks, indices, or other assets simultaneously. The payoff depends on an aggregation of the individual underlying assets, for example:
+
+\begin{itemize}
+    \item \textbf{Worst-of option:} the payout is based on the asset with the worst performance.
+    \item \textbf{Best-of option:} the payout is based on the asset with the best performance.
+    \item \textbf{Average option:} the payout is based on the arithmetic mean of the returns or prices of the underlying assets.
+\end{itemize}
+
+Mathematically, the payoff of a basket option can generally be expressed as a function of the terminal prices of the included assets:
+\begin{equation}
+\text{Payoff} = f(S_T^{1}, S_T^{2}, \dots, S_T^{n}),
+\end{equation}
+where $S_T^{i}$ denotes the price of the $i$-th underlying asset at maturity $T$.
+
+Specifically, for the three commonly used aggregation methods, the payoffs are given by:
+
+\begin{align}
+\text{Worst-of:} \quad & \text{Payoff}_{\text{worst}} = \max\!\left(\min_i S_T^{i} - K,\, 0\right),\\
+\text{Best-of:} \quad & \text{Payoff}_{\text{best}} = \max\!\left(\max_i S_T^{i} - K,\, 0\right),\\
+\text{Average:} \quad & \text{Payoff}_{\text{avg}} = \max\!\left(\frac{1}{n}\sum_{i=1}^{n} S_T^{i} - K,\, 0\right),
+\end{align}
+
+where $K$ is the strike price of the option.
+
+Valuing basket options is more complex than single-asset options due to the dependencies among the underlying assets. These dependencies are typically modeled using the correlations between the individual assets. While closed-form solutions such as the Black-Scholes model \cite{black1973pricing} exist for simple options, they are only available under restrictive assumptions for basket options. Therefore, numerical methods, such as Monte Carlo simulation, are commonly employed.
+
+
+\section{Monte Carlo Simulation for Basket Options}
+\label{sec:bg-monte-carlo}
+The Monte Carlo simulation \cite{boyle1977options} is a numerical method used to estimate the fair price of options by repeatedly simulating possible future paths of the underlying assets.
+
+For each underlying asset $S_t^{i}$, the future price at time $T$ under
+risk-neutral dynamics follows a geometric Brownian motion and is given by
+\begin{equation}
+S_T^{i}
+=
+S_0^{i}
+\exp\!\left(
+    (r - \tfrac{1}{2}\sigma_i^2) T
+    +
+    \sigma_i \sqrt{T}\, Z_i
+\right),
+\label{eq:bg-GBM}
+\end{equation}
+where $\sigma_i$ denotes the volatility of the $i$-th asset,
+$r$ is the continuously compounded risk-free interest rate,
+and $Z_i \sim \mathcal{N}(0,1)$ are standard normally distributed random variables.
+
+Since basket options involve multiple underlying assets, the random variables $Z_i$ must reflect their empirically observed correlations. This is achieved via the Cholesky decomposition of the correlation matrix $\mathbf{C}$:
+\begin{equation}
+\mathbf{C} = \mathbf{L}\mathbf{L}^\top.
+\label{eq:bg-Cholesky}
+\end{equation}
+
+Uncorrelated standard normal vectors $\mathbf{Z} \sim \mathcal{N}(0,I)$ are transformed into correlated random variables via
+\begin{equation}
+\mathbf{Z}_{\text{corr}} = \mathbf{L}\mathbf{Z}.
+\end{equation}
+
+The $i$-th component of the correlated vector is then used in \eqref{eq:bg-GBM},
+\[
+Z_i = \big(\mathbf Z_{\text{corr}}\big)_i .
+\]
+
+Under risk-neutral valuation, the option price is obtained as the discounted
+expected value of the simulated payoffs:
+\begin{equation}
+\text{Price}
+=
+e^{-rT}
+\cdot
+\frac{1}{N}
+\sum_{k=1}^{N}
+\text{Payoff}_k.
+\end{equation}
+
+As the number of simulation paths $N$ increases, the estimator converges to the true expected value.
+
+A practical limitation of Monte Carlo methods is their computational cost. 
+The statistical error of the estimator decreases only on the order of
+$\mathcal{O}(1/\sqrt{N})$, where $N$ is the number of simulated paths. 
+Therefore, achieving higher accuracy requires a disproportionately large increase 
+in simulation runs, which becomes particularly expensive for high-dimensional 
+products such as basket options. 
+Moreover, incorporating correlations between multiple underlying assets
+requires an additional linear transformation of the simulated random variables,
+leading to computational effort that grows approximately quadratically
+with the number of assets.
+
+
+
+    
+\section{Machine Learning}
+\label{sec:bg-machine-learning}
+
+In contrast to classical rule-based algorithms, machine learning models learn functional relationships directly from observed data.
+
+On classical computers, artificial neural networks (ANNs) are commonly used for this purpose. Their structure is inspired by biological nervous systems. These models consist of trainable parameters that are adjusted during an optimization process in order to minimize a target function.
+
+In addition to classical neural networks, there also exist quantum-based machine learning approaches, such as VQCs. These consist of parameterized quantum gates whose parameters are optimized during training analogously to the weights of neural networks.
+
+Such models are prone to overfitting, a phenomenon in which a model fits the training data too closely and consequently exhibits poorer performance on unseen data \cite{Goodfellow-et-al-2016}. To detect this effect, datasets are typically divided into training and test sets.
+
+\subsection{Classical Neural Networks}
+\label{sec:bg-classical-nn}
+
+A neural network is organized into a sequence of layers, each containing at least one neuron. The first layer is referred to as the input layer and receives the original input data of the model. The last layer is the output layer and produces the model prediction. All layers between the input and output layer are called hidden layers.
+
+A neural network in which data are propagated exclusively in one direction—from the input layer to the output layer—is referred to as a feedforward neural network.
+
+Each neuron in a layer is typically connected to all neurons in the immediately following layer. Each neuron receives the outputs of the previous layer as input and forwards its own output to the next layer.
+
+A neuron $h_n^{(j)}$ in the $n$-th layer of the neural network receives the outputs
+$h_{n-1}^{(i)}$, $i = 1,2,\ldots,M_{n-1}$, of the previous layer as inputs. From these, the so-called net input is first computed:
+\begin{equation}
+a_n^{(j)} = \sum_{i=1}^{M_{n-1}} w_{ij}\, h_{n-1}^{(i)} + b_n^{(j)},
+\end{equation}
+where $M_{n-1}$ denotes the number of neurons in layer $(n-1)$. The weights $w_{ij}$ describe the strength of the connection between the $i$-th neuron of the previous layer and the $j$-th neuron of the current layer. The term $b_n^{(j)}$ represents the bias of the neuron.
+
+The model parameters to be determined between layers $(n-1)$ and $n$ are thus given by
+\begin{align}
+w_{ij}, \quad & i = 1,2,\ldots,M_{n-1}, \; j = 1,2,\ldots,M_n, \\
+b_j, \quad & j = 1,2,\ldots,M_n.
+\end{align}
+In total, this results in $M_n \cdot M_{n-1} + M_n$ parameters between two consecutive layers.
+
+The net input $a_n^{(j)}$ is then transformed by a nonlinear activation function $h(\cdot)$ to obtain the output of the neuron:
+\begin{equation}
+h_n^{(j)} = h\left(a_n^{(j)}\right).
+\end{equation}
+
+In practice, the following activation functions are frequently used:
+\begin{itemize}
+    \item \textbf{Exponential Linear Unit (ELU):}
+    \begin{equation}
+        h(x) =
+        \begin{cases}
+            x, & x \ge 0, \\
+            \alpha \left( e^{x} - 1 \right), & x < 0,
+        \end{cases}
+    \end{equation}
+    \item \textbf{Rectified Linear Unit (ReLU):}
+    \begin{equation}
+        h(x) = \max(0, x),
+    \end{equation}
+    \item \textbf{Leaky ReLU:}
+    \begin{equation}
+        h(x) =
+        \begin{cases}
+            x, & x \ge 0, \\
+            \alpha x, & x < 0,
+        \end{cases}
+    \end{equation}
+    where $\alpha$ is a small positive parameter that allows for a weak gradient in the negative region.
+\end{itemize}
+
+To reduce overfitting, regularization techniques such as dropout can be applied, where randomly selected neurons are deactivated during training.
+
+\subsection{Variational Quantum Circuits}
+\label{sec:bg-vqc}
+
+VQCs consist of parameterized quantum circuits whose parameters are optimized using classical optimization procedures.
+
+Formally, a VQC implements a parameterized mapping
+\[
+f_\theta : \mathbb{R}^d \to \mathbb{R},
+\]
+where $x \in \mathbb{R}^d$ denotes a classical input vector and
+$\theta \in \mathbb{R}^p$ the trainable model parameters.
+The model function is defined as the expectation value of an observable operator $M$:
+\begin{equation}
+f_\theta(x)
+=
+\langle 0 | U^\dagger(x,\theta)\, M \, U(x,\theta) | 0 \rangle.
+\end{equation}
+Here, $U(x,\theta)$ is a unitary transformation acting on an $n$-qubit system of dimension $2^n$, $M$ is a Hermitian operator, and $|0\rangle$ denotes the initial computational basis state.
+The optimization of the parameters $\theta$ is performed entirely on a classical computer by repeatedly evaluating the quantum circuit and minimizing or maximizing the expectation value $f_\theta(x)$.
+
+\subsubsection{Circuit Architecture}
+\label{subsubsec:bg-vqc-architecture}
+
+The structure of a variational quantum circuit consists of a combination of data encoding operations, which embed classical input data into the quantum state, and trainable quantum gates that contain the model parameters.
+
+Frequently, the individual features
+\(
+x = (x_1,\dots,x_N) \in \mathbb{R}^N
+\)
+are encoded in parallel on a register of $N$ qubits using rotation-based encodings.
+In this case, a local Hamiltonian of the form
+\(
+H = \tfrac{1}{2}\sigma_z
+\)
+is employed, where $\sigma_z$ denotes the Pauli-$Z$ matrix.
+The resulting quantum circuit can be written as an alternating sequence of data encoding blocks $S_l(x)$ and trainable blocks $W_\theta^{(l)}$:
+\begin{equation}
+U(x,\theta)
+=
+W^{(L+1)}_\theta
+S_L(x)
+W^{(L)}_\theta
+\cdots
+S_1(x)
+W^{(1)}_\theta,
+\end{equation}
+where $L$ denotes the number of encoding layers.
+The data encoding in the $l$-th layer is given by
+\begin{equation}
+S_l(x)
+=
+\bigotimes_{n=1}^{N}
+e^{-i x_n H_{l,n}},
+\qquad
+H_{l,n} = \tfrac{1}{2}\sigma_z^{(n)}.
+\end{equation}
+
+In addition to $\sigma_z$, other Pauli operators such as $\sigma_x$ or $\sigma_y$ can be used as generators of the data encoding.
+These different choices correspond to rotations about different axes on the Bloch sphere.
+Up to a unitary basis transformation, such alternatives lead to structurally comparable architectures, since different Pauli rotations can be transformed into one another by suitable unitary basis changes.
+
+\subsubsection{Coefficient Structure of the Circuit Output}
+\label{sec:bg-vqc-evaluation}
+
+The following derivation follows the presentation in \cite{holzer2024spectral}.
+
+Let
+\(
+\lambda^{(l,n)}_0,\lambda^{(l,n)}_1
+\)
+denote the eigenvalues of the local Hamiltonian $H_{l,n}$.
+For a multi-index
+\(
+j = (j_1,\dots,j_N) \in [2]^N
+\)
+the associated eigenvalue vector is defined as
+\begin{equation}
+\lambda^{(l)}_j
+:=
+\bigl(
+\lambda^{(l,1)}_{j_1},\dots,\lambda^{(l,N)}_{j_N}
+\bigr)^{\mathsf T}
+\in
+\sigma(H_{l,1}) \times \cdots \times \sigma(H_{l,N})
+\subseteq \mathbb{R}^N.
+\end{equation}
+Here, $\sigma(H_{l,n})$ denotes the spectrum of the Hamiltonian $H_{l,n}$, i.e., the set of its eigenvalues.
+The computational basis of the $N$-qubit Hilbert space is formed by tensor product states
+\begin{equation}
+|j\rangle := |j_1,\dots,j_N\rangle = \bigotimes_{n=1}^N |j_n\rangle.
+\end{equation}
+For these basis states, one obtains
+\begin{align}
+W^{(l)}_\theta |j\rangle
+&=
+\sum_{i \in [2]^N}
+W^{(l)}_{i,j} |i\rangle,
+\\
+S_l(x)|j\rangle
+&=
+\exp\!\bigl(-i\,\lambda^{(l)}_j \cdot x\bigr)\,|j\rangle,
+\end{align}
+where
+\(
+W^{(l)}_{i,j} := \langle i | W^{(l)}_\theta | j \rangle \in \mathbb{C}.
+\)
+
+By repeatedly inserting resolutions of the identity, the action of the full circuit on the initial state can be written as
+\begin{equation}
+U(x,\theta)|0\rangle
+=
+\sum_{\substack{j^{(1)},\dots,j^{(L+1)}\\ \in [2]^N}}
+\left(
+\prod_{l=1}^{L+1}
+W^{(l)}_{j^{(l)},j^{(l-1)}}
+\right)
+\exp\!\left(
+-i\,x \cdot \sum_{l=1}^{L} \lambda^{(l)}_{j^{(l)}}
+\right)
+|j^{(L+1)}\rangle,
+\end{equation}
+where $j^{(0)} := (0,\dots,0)$.
+By Hermitian conjugation, an analogous representation is obtained for
+$\langle 0|U^\dagger(x,\theta)$.
+
+Substituting the expanded states into the expectation value
+$f_\theta(x)$
+yields a double sum over basis states, where the matrix elements of the measurement operator
+$M_{j,k} = \langle j | M | k \rangle$
+enter into the coefficients.
+
+Inserting these expressions into the model function leads to
+\begin{equation}
+f_\theta(x)
+=
+\sum_{j,k \in [2]^{N L}}
+a_{k,j}\,
+\exp\!\left(
+i\,x \cdot
+\sum_{l=1}^{L}
+\bigl(
+\lambda^{(l)}_{k^{(l)}} - \lambda^{(l)}_{j^{(l)}}
+\bigr)
+\right),
+\end{equation}
+where the coefficients
+\begin{equation}
+a_{k,j}
+=
+\sum_{j^{(L+1)},k^{(L+1)} \in [2]^N}
+\left(
+\prod_{l=1}^{L+1}
+W^{(l)}_{k^{(l)},k^{(l-1)}}
+\right)
+\left(
+\prod_{l=1}^{L+1}
+W^{(l)\dagger}_{j^{(l-1)},j^{(l)}}
+\right)
+M_{j^{(L+1)},k^{(L+1)}}
+\end{equation}
+depend exclusively on the trainable parameters $\theta$ and on the measurement operator $M$.
+
+\subsubsection{Fourier Representation of VQC}
+\label{sec:bg-vqc-fourier}
+
+As shown in \cite{schuld2021effect}, the expectation value of a VQC with rotation-based data encoding can be expressed as a finite multidimensional Fourier series:
+\begin{equation}
+f_\theta(x)
+=
+\sum_{\omega \in \Omega}
+c_\omega(\theta)\,
+e^{i\,\omega \cdot x}.
+\end{equation}
+The Fourier coefficients $c_\omega(\theta)$ correspond to the previously introduced coefficients $a_{k,j}$, grouped according to identical frequency vectors $\omega$.
+The full frequency spectrum $\Omega$ follows directly from the phase structure of the exponential terms appearing in the derivation.
+
+For each choice of multi-indices $j^{(l)},k^{(l)}$, the associated frequency vector is given by
+\begin{equation}
+\omega
+=
+\sum_{l=1}^{L}
+\bigl(
+\lambda^{(l)}_{k^{(l)}} - \lambda^{(l)}_{j^{(l)}}
+\bigr)
+\in \mathbb{R}^N,
+\end{equation}
+where $\lambda^{(l)}_{j^{(l)}} \in \mathbb{R}^N$ denote the eigenvalue vectors of the data-encoding Hamiltonians used in the $l$-th layer.
+Thus, the complete frequency spectrum is generated by sums and differences of the eigenvalues across all data-encoding layers:
+\begin{equation}
+\Omega = \sum_{l=1}^{L}
+\Delta (\sigma(H_{l,1}) \times \dots \times \sigma(H_{l,N})),
+\end{equation}
+where $\Delta \sigma(H_{l,n})$ denotes the set of all pairwise differences of the eigenvalues of $H_{l,n}$.
+
+For the encoding Hamiltonian used in this thesis, $H = \tfrac12 \sigma_z$, it holds that $\Delta \sigma(H_{l,n}) = \{-1,0,1\}$. Consequently, each one-dimensional frequency spectrum $\Omega_n$ contains exactly $2L+1$ distinct frequencies \cite{schuld2021effect}.
+
+Since in each of the $N$ input dimensions, under identical and separable data encoding with $L$ reupload layers, exactly $2L+1$ different frequency values are possible \cite{schuld2021effect,holzer2024spectral}, and the components of a frequency vector can be combined independently, the full multidimensional spectrum contains at most $(2L+1)^N$ possible frequency vectors.
+
+\subsubsection{Frequency Scaling via Encoding Prefactors}
+\label{sec:bg-vqc-frequency-scaling}
+
+The expressivity of rotation-based data encoding can be systematically increased by introducing layer-specific prefactors in the encoding gates.
+
+For the encoding Hamiltonian $H = \tfrac12 \sigma_z$, the unitary $\exp(-i x H)$ corresponds to the standard single-qubit rotation gate $R_Z(x) = \exp(-i \tfrac{x}{2}\sigma_z)$.
+Instead of a simple encoding of the form $R_Z(x)$, the input data in each encoding layer $l$
+can therefore be scaled by a prefactor $p_l \in \mathbb{R}$,
+resulting in encoding operations of the form $R_Z(p_l x)$.
+
+Through this encoding, the frequency spectrum can be systematically expanded.
+For a single qubit with encoding Hamiltonian $H = \tfrac12 \sigma_z$,
+the set of possible frequency contributions per layer becomes
+\begin{equation}
+p_l\,\Delta\sigma(H) = \{-p_l,\,0,\,p_l\}.
+\end{equation}
+
+If the layer-specific prefactors are chosen, for example, as
+\(
+p_l = 3^{l-1},
+\)
+the resulting one-dimensional frequency spectrum for an input component $x_n$ is given by
+\begin{equation}
+\label{eq:Omega_n}
+\Omega_n
+=
+\left\{
+\sum_{l=1}^{L} s_l\,3^{\,l-1}
+\;\middle|\;
+s_l \in \{-1,0,1\}
+\right\}.
+\end{equation}
+This spectrum contains $|\Omega_n| = 3^L$ distinct frequencies.
+
+For multidimensional inputs $x \in \mathbb{R}^N$ and identical, separable data encoding across all input dimensions, the complete frequency spectrum is given by the Cartesian product of the one dimensional spectra. Hence, the total number of distinct frequency vectors is
+\[
+|\Omega| = (3^L)^N
+\]
+(cf.~\cite{poppel2025mitigating}).
+
+\subsubsection{Parameterized Ansatz}
+\label{sec:bg-vqc-trainable-blocks}
+
+The parameterized ansatz $W(\theta)$ contains trainable rotation gates whose parameters $\theta$ determine the Fourier coefficients $c_\omega(\theta)$ of the model function represented by the VQC. In addition, entangling gates, such as CNOT gates, couple different qubits and thereby enable the emergence of mixed frequency components.
+
+As shown in \cite{schuld2021effect}, at least one free parameter is required to independently control each frequency component appearing in the model. This condition is necessary for fully exploiting the generated frequency spectrum.
+
+However, the number of simultaneously controllable, linearly independent degrees of freedom is limited by the dimension of the dynamical Lie algebra (DLA) $\mathfrak{g}$. The DLA denotes the Lie algebra generated by the ansatz generators through repeated commutators and thus characterizes the set of all unitary transformations reachable by the ansatz. For a system of $n$ qubits, its dimension is in the general case bounded by $4^n - 1$, implying that at most $\dim(\mathfrak{g})$ linearly independent generator directions can be realized per ansatz layer \cite{poppel2025mitigating}.
+
+Since the attainable frequency spectrum may grow exponentially with increasing depth,
+depending on the chosen encoding, a single ansatz layer is often insufficient to independently control all frequency components. 
+Therefore, elementary train blocks $W^{(l)}_b$ ($b = 1, \dots, B$) are applied sequentially and combined into an ansatz layer $W^{(l)}(\theta_l)$.
+This increases the number of trainable parameters without expanding the frequency spectrum itself.
+
+When ansatz layers are separated by nonlinear data encodings $S(x)$,
+new frequency combinations that depend on the input arise.
+Each additional ansatz layer can then again contribute up to $\dim(\mathfrak{g})$ degrees of freedom for controlling the corresponding Fourier coefficients.
+Consequently, the number of effectively controllable coefficients grows with the number of alternating encoding and ansatz layers,
+but remains bounded per layer by the dimension of the DLA.
+
+
+\subsection{Training}
+\label{sec:bg-training}
+
+Training consists of determining the weights and parameters such that the difference between the predicted and the true target values is minimized. For this purpose, a loss function is defined that quantifies the prediction error. A commonly used choice is the Mean Squared Error (MSE):
+\begin{equation}
+\text{MSE} = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2.
+\end{equation}
+where $N$ denotes the number of training samples.
+
+The optimization is typically performed using gradient descent. In this procedure, the gradients of the loss function with respect to all trainable model parameters are computed, and the parameters are iteratively updated in the direction of steepest descent. In classical neural networks, these gradients are calculated using the backpropagation algorithm, whereas in VQCs analytical gradient methods such as the parameter-shift rule are employed \cite{schuld2019evaluating}. This approach is particularly required for evaluations on quantum hardware, but can also be used in simulators.
+
+
+\section{Non-Uniform Fast Fourier Transform}
+\label{sec:bg-nufft}
+
+To analyze which frequency spectrum a VQC should be able to represent,
+the spectrum of the training data can first be examined.
+Since real datasets are generally not uniformly distributed in the input space,
+the classical Fast Fourier Transform (FFT), which assumes equidistant
+sampling points, is not suitable for this purpose.
+Instead, methods are required that allow Fourier analysis
+on non-uniformly distributed points.
+
+A suitable approach is the Non-Uniform Fast Fourier Transform
+(NUFFT) \cite{dutt1993fast}.
+First, a regular frequency grid
+\begin{equation}
+\Omega_{\text{grid}} =
+\left\{
+-\frac{N}{2}, \ldots, \frac{N}{2}-1
+\right\}^d
+\end{equation}
+is defined on which the Fourier coefficients are computed,
+where $d$ denotes the dimension of the input space.
+
+Let $x_j$ be non-uniformly distributed points with corresponding
+function values $y_j$.
+The desired coefficients are formally given by
+\begin{equation}
+\hat{c}_\omega
+=
+\sum_{j=0}^{M-1}
+y_j \, e^{- i \omega \cdot x_j},
+\qquad \omega \in \Omega_{\text{grid}}.
+\end{equation}
+
+For the evaluation, the data $y_j$
+are first mapped onto an equidistant auxiliary grid in physical space
+using a localized window function
+$\varphi$.
+This yields a discrete grid function
+\begin{equation}
+g(m)
+=
+\sum_{j=0}^{M-1}
+y_j \, \varphi(m - x_j),
+\end{equation}
+where $m$ denotes the points of the equidistant auxiliary grid.
+This step corresponds to a convolution of the data with the window function.
+
+On the uniformly discretized grid, a classical FFT can then be applied,
+\begin{equation}
+G(\omega) = \mathrm{FFT}(g)(\omega).
+\end{equation}
+Since convolution in physical space corresponds to multiplication in
+frequency space, a correction is required to obtain the desired coefficients:
+\begin{equation}
+\hat{c}_\omega
+\approx
+\frac{G(\omega)}{\hat{\varphi}(\omega)},
+\end{equation}
+where $\hat{\varphi}$ denotes the Fourier transform
+of the chosen window function.
+
+The magnitude $|\hat{c}_\omega|$ provides a discrete amplitude spectrum of the data on the selected frequency grid.
+Large amplitudes indicate dominant frequency components and allow an estimation of the spectral bandwidth that must be represented by the VQC.

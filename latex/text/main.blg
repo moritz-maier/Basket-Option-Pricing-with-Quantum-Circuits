@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2025/Homebrew)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: text/abstract.aux
+A level-1 auxiliary file: text/abstract_english.aux
+The style file: alpha.bst
+Database file #1: bibliography.bib
+Warning--to sort, need author or key in pennylane_rot
+Warning--to sort, need author or key in tensorflow_determinism
+Warning--empty journal in bradbury2018jax
+You've used 21 entries,
+            2543 wiz_defined-function locations,
+            681 strings with 8629 characters,
+and the built_in function-call counts, 8979 in all, are:
+= -- 841
+> -- 612
+< -- 3
++ -- 223
+- -- 222
+* -- 737
+:= -- 1570
+add.period$ -- 61
+call.type$ -- 21
+change.case$ -- 168
+chr.to.int$ -- 21
+cite$ -- 26
+duplicate$ -- 280
+empty$ -- 540
+format.name$ -- 237
+if$ -- 1731
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 19
+newline$ -- 107
+num.names$ -- 57
+pop$ -- 149
+preamble$ -- 1
+purify$ -- 190
+quote$ -- 0
+skip$ -- 246
+stack$ -- 0
+substring$ -- 366
+swap$ -- 20
+text.length$ -- 3
+text.prefix$ -- 3
+top$ -- 0
+type$ -- 164
+warning$ -- 3
+while$ -- 71
+width$ -- 25
+write$ -- 261
+(There were 3 warnings)

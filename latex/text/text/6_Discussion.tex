@@ -1,0 +1,212 @@
+\chapter{Discussion}
+
+\section{Model Capacity and Frequency Structure}
+
+In the baseline scenario, almost all models achieve very high predictive
+performance. The performance increase of the VQC when moving from
+$L=1$ to $L=3$ (unary) or $L=2$ (ternary), followed by only marginal
+improvements thereafter, can be explained by the previously analyzed
+frequency structure. The target functions are dominated by
+low-frequency components, so that even small encoding depths capture
+most of the relevant structure. Increasing the depth further expands
+the representable frequency spectrum, but provides only limited
+additional benefit since high-frequency components are only weakly
+present in the target functions.
+
+The lower performance of the ternary models can also be explained by
+their smaller number of effective parameters. Since ternary encoding
+can represent a comparable frequency spectrum with fewer layers, the
+number of effectively usable parameters is more strongly limited by
+the achievable DLA.
+
+Systematic differences can also be observed between the different
+payoff structures. The Worst-of payoff represents the most challenging
+approximation task. In contrast to Best-of and Average payoffs, the
+function is not only bounded below by zero but is additionally defined
+by a minimum operator. This structure introduces stronger nonlinearities
+and therefore leads to slightly lower median $R^2$ values. These
+nonlinearities are particularly pronounced near the payoff boundary,
+where the option value transitions from zero to positive values.
+Outside this region, the pricing function often behaves approximately
+linearly, since changes in the input variables affect the payoff more
+proportionally.
+
+In the Worst-of scenario, the VQC also exhibits systematic positive
+errors at low relative strikes in the upper value range, corresponding
+to an underestimation of high option prices. In this region, the payoff
+depends strongly on the minimum of the underlying assets, so that small
+changes in the inputs can lead to larger changes in the function value.
+
+Rotation-based VQCs can be interpreted functionally as models with a
+finite Fourier-like frequency spectrum. Non-smooth or kink-like
+structures can therefore only be approximated, while the globally
+coupled parametrization induces a certain smoothing effect. This is
+consistent with the observed underestimation of high target values
+(Figure~\ref{fig:error-analysis}).
+
+\section{Impact of Model Capacity under Limited Data}
+
+With reduced training data, a more differentiated picture emerges.
+Large Ferguson architectures maintain high predictive performance even
+for very small datasets, suggesting that their larger model capacity
+already provides an advantage with limited data and does not lead to
+pronounced overfitting effects.
+
+The Culkin model also shows stable performance for small datasets,
+which is likely related to the regularizing effect of the applied
+dropout.
+
+In contrast, the VQC models exhibit an opposite pattern. The shallow
+configuration ($L=1$) is the most robust for very small datasets,
+whereas deeper variants show noticeable performance degradation. This
+can be explained by the strongly expanded frequency representation at
+larger encoding depths. If the training data are insufficient to
+reliably determine additional degrees of freedom, unstable
+approximations may occur. The shallow configuration therefore acts
+like a more strongly regularized model.
+
+As the amount of training data increases, this picture changes.
+Once sufficient data are available, the deeper VQC architectures also
+benefit from their larger model capacity and achieve predictive
+performance comparable to classical networks.
+
+\section{Robustness to Noise}
+
+The experiments with artificial noise show that models with high
+capacity achieve the best results in the noise-free case, but suffer
+disproportionate performance losses as noise intensity increases. This
+applies both to large Ferguson architectures and to VQCs with greater
+encoding depth.
+
+Nevertheless, the classical neural networks remain relatively robust
+to moderate noise and still achieve high test-$R^2$ values even at
+$\alpha = 0.5$.
+
+The Culkin model with dropout shows particularly high stability,
+which can plausibly be attributed to the regularizing effect of
+dropout.
+
+The shallow VQC ($L=1$) also exhibits only minor performance losses,
+whereas deeper variants are considerably more sensitive to noisy
+training data.
+
+These observations can be explained by the effective model complexity.
+Models with greater capacity possess more degrees of freedom and can
+therefore more easily adapt to noise in the training data, whereas
+simpler architectures act as stronger regularizers and thus remain
+more robust.
+
+\section{Interaction of Data Scarcity and Noise}
+
+In the combined scenario of limited training data and strong noise,
+this pattern becomes even more apparent. Models with lower capacity
+achieve more stable results for very small datasets than more complex
+architectures.
+
+In particular, the shallow VQC remains one of the most robust
+configurations across all considered sample sizes, whereas deeper
+variants perform substantially worse when the dataset is very small.
+
+As the amount of training data increases, however, this picture
+changes considerably. Once sufficient data are available, the deeper
+VQC models benefit from their greater expressive power and strongly
+improve their predictive performance.
+
+For the classical architectures, a similar but not identical effect
+can be observed. While smaller Ferguson models benefit substantially
+from increasing dataset size, very large models show only limited
+improvement under strong noise when additional training data are
+provided.
+
+
+\section{Generalization under a Temporally Ordered Split}
+
+Such a split is also closer to the real application scenario in
+financial contexts, since models are typically trained on historical
+data and applied to future market periods. While the classical
+architectures largely retain their high predictive performance,
+the VQC models show increased sensitivity, particularly in the
+Best-of scenario.
+
+The analysis shows that higher volatility levels occur during the
+test period than were observed during training. The largest prediction
+errors concentrate in these phases, indicating a distribution shift
+(out-of-distribution) in the volatility features. In the Best-of case,
+target values also appear that systematically exceed the range
+observed during training.
+
+This effect is particularly pronounced in the Best-of scenario.
+Higher volatility increases the probability of extreme terminal
+values of individual underlyings. Since the Best-of payoff is
+determined by the maximum, this leads to more pronounced extreme
+values and a steeper functional behavior than for Worst-of or
+Average payoffs. Consistent with this, the performance degradation
+of the VQC models is considerably smaller for Worst-of.
+
+The deterioration is particularly visible for deeper VQC
+configurations. One possible explanation is that greater encoding
+depth improves interpolation within the training distribution,
+but at the same time increases sensitivity to distribution shifts.
+Classical ReLU-based architectures approximate functions in a
+piecewise linear manner and extend learned slopes beyond the
+training region, which may lead to more robust generalization in
+this scenario.
+
+\section{Limitations}
+
+The original goal of this work was to study basket option prices
+based on real observed market data, in order to represent the
+correlations between the underlying assets using entanglement.
+However, since hardly any freely available historical datasets
+exist for actual basket option prices, the target values were
+generated synthetically using Monte Carlo simulations.
+
+Although the simulation is based on real historical time series
+of the underlying assets, it represents a model-based
+approximation. In particular, simplifying assumptions such as
+constant correlations and simplified dynamics are made.
+Consequently, the dependencies between the assets represented
+through entanglement may differ from those observed in real
+market prices.
+
+The resulting target values therefore reflect the complexity of
+real market prices only to a limited extent.
+
+\section{Future Work}
+
+A natural extension of this work is the use of more complex and
+realistic datasets. In the present experiments, basket option
+prices were generated using a simplified simulation model whose
+frequency structure is dominated by low-frequency components.
+Future work could investigate how the models behave when the
+target functions exhibit more pronounced high-frequency
+structures.
+
+One possible direction is the use of real market data for basket
+options, provided that suitable datasets become available.
+Alternatively, more realistic simulation models could be
+employed, for example incorporating time-dependent correlations,
+stochastic volatility, or varying maturities.
+
+Furthermore, it would be interesting to analyze to what extent
+modeling absolute basket prices instead of relative returns
+changes the functional structure of the target variable and
+therefore imposes different requirements on the frequency
+representation.
+
+Another extension is the consideration of a larger number of
+underlying assets. As dimensionality increases, the structural
+complexity of the pricing function grows substantially. Since
+the representable frequency spectrum of rotation-based VQCs
+increases exponentially with the input dimension, more
+pronounced differences between classical and quantum-based
+models may emerge in higher-dimensional settings.
+
+Finally, it could be investigated whether appropriate
+preprocessing of the target variable improves modeling.
+Since option prices are nearly linear across large regions of
+the input space and stronger nonlinearities mainly occur near
+the payoff boundaries, a transformation such as an arccos
+mapping could help distribute the functional structure more
+evenly and thereby facilitate approximation by rotation-based
+VQCs.

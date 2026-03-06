@@ -1,0 +1,102 @@
+\chapter{Related Work}
+\label{sec:related-work}
+
+\section{Quantum Amplitude Estimation for Option Pricing}
+
+A prominent quantum-based approach to the valuation of European basket options is Quantum Amplitude Estimation (QAE), as described in \cite{stamatopoulos2020option}. QAE is conceptually closely related to classical Monte Carlo simulation, but under idealized assumptions enables a quadratic speedup of the convergence rate from $\mathcal O(1/\varepsilon^2)$ to $\mathcal O(1/\varepsilon)$.
+
+First, the probability distribution of the underlying random variables is encoded into a quantum state. For this purpose, a state preparation operator $G$ is used to generate the state
+\begin{equation}
+    |\psi\rangle = \sum_j \sqrt{p(j)}\,|j\rangle
+\end{equation}
+where $j$ denotes a discrete realization vector of the Brownian motion and $p(j)$ the corresponding discretized probability density. Correlations between the underlyings are incorporated through the joint multivariate probability distribution. Alternatively, the distribution can also be learned directly from market data in a data-driven manner, for example using qGANs \cite{zoufal2019quantum}.
+
+In the next step, the normalized payoff function $\tilde f(j)\in[0,1]$ is coupled to an ancilla qubit using a controlled rotation operator $R$. Applying $R$ to $|\psi\rangle$ yields the joint state
+\begin{equation}
+    |\chi\rangle
+    =
+    \sum_j \sqrt{p(j)}\,|j\rangle
+    \left(
+        \sqrt{1-\tilde f(j)}\,|0\rangle
+        +
+        \sqrt{\tilde f(j)}\,|1\rangle
+    \right).
+\end{equation}
+The probability of measuring the ancilla qubit in the state $|1\rangle$ is $\mu = \sum_j p(j)\,\tilde f(j)$, i.e., the desired (normalized) expectation value.
+
+To determine $\mu$, QAE maps this expectation value to an eigenphase of a suitable unitary operator, which is subsequently estimated using Quantum Phase Estimation (QPE). First, a phase inversion of the subspace in which the ancilla qubit is in state $|1\rangle$ is defined as
+\begin{equation}
+    V := I - 2\bigl(I \otimes |1\rangle\langle 1|\bigr),
+\end{equation}
+as well as a reflection about the prepared state
+\begin{equation}
+    U := I - 2|\chi\rangle\langle\chi|.
+\end{equation}
+The latter can be implemented via the state preparation operator $F = R(G\otimes I)$, since $|\chi\rangle = F|0\rangle$ holds.
+
+From these two reflections, an operator
+\begin{equation}
+    Q := U V U V
+\end{equation}
+is constructed, which acts invariantly on the two-dimensional subspace spanned by the components in which the ancilla qubit is in state $|0\rangle$ and $|1\rangle$, respectively. In this subspace, $Q$ corresponds to a rotation with eigenvalues $e^{\pm i\theta}$, where the rotation angle $\theta$ is uniquely related to the expectation value. In particular,
+\begin{equation}
+    \mu = \sin^2\!\left(\frac{\theta}{4}\right).
+\end{equation}
+
+To determine $\theta$, QPE is applied to the operator $Q$. For this purpose, an $m$-qubit phase register is introduced and controlled applications of the powers $Q^{2^k}$ are performed. After applying the inverse quantum Fourier transform, measurement of the phase register yields an estimator $\tilde\theta$ of the eigenphase, from which an estimator $\hat\mu$ of the expectation value is computed.
+
+Since the number of required applications of $Q$ to achieve accuracy $\varepsilon$ scales only as $\mathcal O(1/\varepsilon)$, a quadratic speedup over classical Monte Carlo methods is obtained.
+
+\section{Quantum Differential Machine Learning for Option Pricing}
+
+Another approach in quantum-based option pricing is \emph{Quantum Differential Machine Learning} (QDML), as presented in \cite{sakuma2025quantum}. In contrast to purely price-oriented approximation approaches, QDML aims not only to approximate option prices themselves, but simultaneously their sensitivities (the so-called Greeks).
+
+The core idea of the method is the simultaneous modeling of the price function \( V(x) \) and its partial derivatives with respect to the input parameters \( x \). As in this thesis, a VQC is used as a parameterized model \( f_\theta(x) \).
+
+The key difference from classical training procedures lies in the loss function, which incorporates not only the pricing error but also errors in the derivatives. Formally, a combined objective function of the form
+\begin{equation}
+\mathcal{L}(\theta)
+=
+(f_\theta(x)-V(x))^2
++
+\gamma
+\sum_i
+\left(
+\frac{\partial f_\theta(x)}{\partial x_i}
+-
+\frac{\partial V(x)}{\partial x_i}
+\right)^2
+\end{equation}
+is minimized, where \( \gamma \) is a weighting parameter that controls the relative importance of matching the sensitivities compared to the pricing error.
+
+The sensitivities are explicitly used as training targets. For given training data
+\[
+(x^{(k)}, V^{(k)}, \partial V^{(k)}/\partial x_i), 
+\]
+it is required not only that
+\( f_\theta(x^{(k)}) \approx V^{(k)} \),
+but additionally that
+\(
+\partial f_\theta(x^{(k)})/\partial x_i
+\approx
+\partial V^{(k)}/\partial x_i
+\)
+holds. The model is thus forced to reproduce not only the function values, but also the local slope of the price function.
+
+The computation of model sensitivities is performed using the parameter-shift rule. If input parameters \( x_i \) are encoded via rotation gates of the form \( U(\phi)=e^{-i\phi G/2} \) with a generator \( G \) having two eigenvalues (e.g., a Pauli matrix), the partial derivative can be computed exactly as
+\begin{equation}
+\frac{\partial f_\theta}{\partial x_i}
+=
+\frac{\partial \phi_i}{\partial x_i}
+\cdot
+\frac{
+f_\theta(\phi_i+\frac{\pi}{2})
+-
+f_\theta(\phi_i-\frac{\pi}{2})
+}{2}.
+\end{equation}
+The derivative is therefore obtained from two shifted circuit evaluations per input parameter. Using the chain rule, quantities such as Delta, Vega, or other Greeks can be computed directly.
+
+In the context of option pricing, this approach is particularly motivated by the central importance of efficient sensitivity computation in financial risk management. The calculation of Greeks using Monte Carlo methods is computationally demanding. With QDML, prices and sensitivities can be computed from the same parameterized quantum circuit without requiring additional numerical finite-difference schemes.
+
+In contrast to QDML, the focus of the present thesis is not on the simultaneous approximation of sensitivities, but on the analysis of the functional representational capacity of a VQC and its behavior under different data conditions.

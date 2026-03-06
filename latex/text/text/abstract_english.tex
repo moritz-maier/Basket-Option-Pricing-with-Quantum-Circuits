@@ -1,0 +1,21 @@
+% -------------------------------------------------------------------------------------------------
+%      MDSG Latex Framework
+%      ============================================================================================
+%      File:                  abstract.tex
+%      Author(s):             Michael Duerr
+%      Version:               1
+%      Creation Date:         30. Mai 2010
+%      Creation Date:         30. Mai 2010
+%
+%      Notes:                 - Place your abstract here
+% -------------------------------------------------------------------------------------------------
+%
+\vspace*{2cm}
+
+\begin{center}
+    \textbf{Abstract}
+\end{center}
+
+\vspace*{1cm}
+
+\noindent The valuation of basket options poses a complex numerical challenge due to their dependence on multiple underlying assets and their correlations. While classical Monte Carlo methods require substantial computational effort as the dimensionality increases, machine learning approaches enable a direct approximation of the pricing function. The objective of this thesis is to investigate variational quantum circuits (VQCs) for approximating basket option prices and to compare their performance with established classical neural network architectures. The training data are generated using Monte Carlo simulations whose parameters are estimated from historical market data. Different payoff structures (Worst-of, Best-of, and Average) are considered, and the effects of training dataset size, artificial noise, and a temporally ordered train–test split are analyzed. In addition, the frequency structure of the target functions is examined using a Non-Uniform Fast Fourier Transform in order to relate the representational capacity of the VQCs to the spectral properties of the pricing function. The results show that both classical neural networks and VQC-based models can approximate the pricing function with high accuracy. While classical networks tend to benefit from increasing model size, VQCs achieve most of their maximum performance already at moderate circuit depth, which is consistent with the predominantly low-frequency structure of the target functions. Under limited data availability and strong noise, simpler models prove to be more robust, whereas more complex architectures only reach their full potential when sufficient training data are available. Overall, VQC-based models achieve a competitive approximation performance, although they do not demonstrate a clear advantage over classical neural networks in the investigated setting.

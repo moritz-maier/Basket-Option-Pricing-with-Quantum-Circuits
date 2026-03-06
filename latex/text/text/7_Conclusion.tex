@@ -1,0 +1,58 @@
+\chapter{Conclusion}
+
+A central motivation of this work was the question of whether the
+ability of entangled quantum states to represent non-separable
+dependencies can provide advantages when modeling the correlations
+between multiple underlyings on which basket options depend.
+Against this background, this thesis investigated the extent to
+which VQCs are suitable for approximating basket option prices.
+To assess their performance, a comparison with established classical
+neural network architectures was conducted.
+
+The results show that both classical neural networks and VQC-based
+models are able to approximate the underlying pricing function of
+basket options with high accuracy. In the baseline scenario with a
+large training dataset and without artificial noise, almost all
+models achieve test-$R^2$ values close to $1$. This confirms that
+data-driven approaches are generally well suited to learn complex
+valuation functions in the context of option pricing.
+
+The analysis of model capacity reveals notable differences between
+classical architectures and VQC models. While classical neural
+networks tend to show continuous performance improvements as the
+model size increases, VQCs already achieve most of their maximum
+performance at moderate circuit depth. Additional layers expand
+the representable frequency spectrum, but provide only limited
+benefit in the considered datasets since the target functions are
+dominated by low-frequency components.
+
+Under limited data availability, a clear trade-off between model
+capacity and robustness can be observed. Simpler architectures --
+both classical networks and VQCs -- produce more stable results for
+small datasets, whereas more complex models reach their full
+potential only when sufficient training data are available.
+A similar pattern appears under noisy training data, where models
+with higher capacity suffer stronger performance degradation.
+This effect becomes particularly pronounced in the combined
+scenario of limited data and strong noise, where simpler models,
+especially shallow VQCs and smaller classical networks, show the
+most robust performance.
+
+The analysis of a temporally ordered train–test split further
+reveals differences in generalization behavior. While classical
+ReLU-based networks largely retain their predictive performance,
+VQCs show greater sensitivity to distribution shifts in the
+input features, particularly at higher volatility levels.
+This suggests that the globally coupled functional structure
+of rotation-based quantum models allows highly accurate
+approximation within the training distribution but may lead
+to less robust extrapolation.
+
+Overall, the results demonstrate that VQC-based models can achieve
+competitive approximation performance for basket option pricing.
+However, no clear practical advantage over classical neural
+networks can be identified in the investigated setting.
+At the same time, the experiments highlight that their performance
+strongly depends on the structure of the target function as well
+as on data availability, data quality, and the stability of the
+data distribution.
