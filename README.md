@@ -8,7 +8,7 @@ Author: Moritz Maier
 
 The full thesis document is included in this repository:
 
-`BasketOptionPricingWithQuantumCircuits.pdf`
+[Thesis PDF](latex/text/main.pdf)
 
 ---
 
@@ -41,6 +41,8 @@ config/
 data/
     processed/
     yf/
+latex/
+    text/
 notebooks/
     01_generate_data.ipynb
     02_run_single_experiment.ipynb
@@ -81,8 +83,52 @@ src/
     paths.py
 README.md
 requirements.txt
-BasketOptionPricingWithQuantumCircuits.pdf
 ```
+
+---
+
+## Clone Repository
+
+The experiment results are stored in a separate GitLab repository and included in this project as a Git submodule in the `results/` directory.
+
+Results repository:
+https://gitlab2.cip.ifi.lmu.de/maiermo/basket-option-pricing-with-quantum-circuits-results
+
+### Clone without results
+
+If you only want the code and repository structure, you can clone the repository normally:
+
+```bash
+git clone https://github.com/moritz-maier/Basket-Option-Pricing-with-Quantum-Circuits.git
+cd Basket-Option-Pricing-with-Quantum-Circuits
+```
+
+In this case, the `results/` directory will be empty.
+
+---
+
+### Clone including results
+
+To clone the repository **including the experiment results**, use:
+
+```bash
+git clone --recurse-submodules https://github.com/moritz-maier/Basket-Option-Pricing-with-Quantum-Circuits.git
+cd Basket-Option-Pricing-with-Quantum-Circuits
+```
+
+This command automatically downloads the `results/` submodule from the GitLab repository.
+
+---
+
+### Download results after cloning
+
+If you already cloned the repository without submodules, you can download the results afterwards with:
+
+```bash
+git submodule update --init --recursive
+```
+
+This will fetch the `results/` repository and populate the `results/` directory.
 
 ---
 
@@ -222,13 +268,21 @@ This notebook provides:
 
 ## Included Dataset and Results
 
-The repository already contains:
+The repository includes:
 
 - The processed dataset used in the thesis (`data/processed/`)
-- All experiment results (`results/`)
+- All experiment results stored in the `results/` directory.
 
-This means:
+The results are stored in a separate Git repository and included here as a Git submodule.
 
-- The notebooks can be executed directly without rerunning experiments.
-- The reported results match those presented in the thesis.
-- Reproducing the figures and statistics requires no additional training runs.
+If the `results/` directory is empty after cloning, run:
+
+```bash
+git submodule update --init --recursive
+```
+
+**Note** 
+
+The experiment results are stored in a separate GitLab repository hosted by LMU.
+
+Since this repository is tied to a university account, long-term availability of the results repository cannot be guaranteed indefinitely. If the results repository becomes unavailable in the future, the project can still be reproduced by generating the dataset and rerunning the experiments using the provided code.
